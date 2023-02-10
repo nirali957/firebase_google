@@ -10,12 +10,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // FirebaseUser _user;
+  GoogleSignInAccount? currentUser;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
 
   bool isSignIn = false;
   bool google = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    successGoogle();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () async {
                   await signInWithGoogle();
 
-                  debugPrint("Auth ----------->> ${auth.currentUser!.displayName}");
+                  // debugPrint("Auth ----------->> ${auth.currentUser!.displayName}");
                 },
                 child: Container(
                   width: 200,
@@ -68,7 +75,47 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<UserCredential> signInWithGoogle() async {
+  /// ---- Social Google Login ------------>>>
+  signInWithGoogle() {
+    googleSignIn.signIn();
+  }
+
+  void successGoogle() {
+    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) async {
+      currentUser = account;
+
+      if (currentUser != null) {
+        debugPrint('''
+          Google Logged in!
+          Google Id: ${currentUser!.id}
+          Email: ${currentUser!.email};
+          Name: ${currentUser!.displayName ?? ""};
+          Profile Pic: ${currentUser!.photoUrl ?? ""};
+      ''');
+
+        final GoogleSignInAuthentication? googleAuth = await currentUser?.authentication;
+
+        debugPrint("Google Auth accessToken ------------->>>${googleAuth!.accessToken}");
+        debugPrint("Google Auth idToken ------------->>>${googleAuth.idToken}");
+
+        OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        debugPrint("credential ------------->>>$credential");
+
+        await auth.signInWithCredential(credential);
+
+        await account!.clearAuthCache();
+        await googleSignIn.disconnect();
+        await googleSignIn.signOut();
+        currentUser = null;
+      }
+    });
+  }
+
+  /*Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     // Obtain the auth details from the request
@@ -89,5 +136,5 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Once signed in, return the UserCredential
     return await auth.signInWithCredential(credential);
-  }
+  }*/
 }
