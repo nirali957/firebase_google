@@ -55,7 +55,7 @@ class _EmailPasswordSignInScreenState extends State<EmailPasswordSignInScreen> {
                   userSignIn();
                 },
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(const Size(200, 45)),
+                  fixedSize: MaterialStateProperty.all(const Size(220, 50)),
                 ),
                 child: const Text("Sign In"),
               ),

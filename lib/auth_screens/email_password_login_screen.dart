@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_google/auth_screens/email_password_sign_in_screen.dart';
+import 'package:firebase_google/auth_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class EmailPasswordLoginScreen extends StatefulWidget {
@@ -40,6 +41,7 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
               ),
               TextField(
                 controller: passwordController,
+                obscureText: false,
                 decoration: InputDecoration(
                   hintText: "Enter password",
                   labelText: "password",
@@ -51,11 +53,23 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
               ),
               const SizedBox(height: 15),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WelcomeScreen(),
+                    ),
+                  );
+                },
                 style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(const Size(200, 45)),
+                  fixedSize: MaterialStateProperty.all(const Size(220, 50)),
                 ),
-                child: const Text("Login In"),
+                child: const Text(
+                  "Login In",
+                  style: TextStyle(
+                    fontSize: 17,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               GestureDetector(
