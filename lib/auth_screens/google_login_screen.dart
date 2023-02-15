@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class GoogleLoginScreen extends StatefulWidget {
+  const GoogleLoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<GoogleLoginScreen> createState() => _GoogleLoginScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _GoogleLoginScreenState extends State<GoogleLoginScreen> {
   GoogleSignInAccount? currentUser;
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
