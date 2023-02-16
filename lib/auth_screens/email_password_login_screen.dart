@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_google/auth_screens/email_password_sign_in_screen.dart';
-import 'package:firebase_google/auth_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class EmailPasswordLoginScreen extends StatefulWidget {
@@ -36,7 +35,7 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextField(
@@ -54,12 +53,7 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
               const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WelcomeScreen(),
-                    ),
-                  );
+                  userLogin();
                 },
                 style: ButtonStyle(
                   fixedSize: MaterialStateProperty.all(const Size(220, 50)),
@@ -99,17 +93,25 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
 
   userLogin() async {
     try {
-      final credential = await auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-      debugPrint('--------------->$credential');
+      if (auth.currentUser!.emailVerified) {
+        debugPrint("currentUser ----------------> ${auth.currentUser}");
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         debugPrint('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        debugPrint('Wrong password provided for that user.');
+        debugPrint('Your password do not match please try again.');
+      } else if (e.code == 'weak password') {
+        debugPrint('password is weak');
       }
+    } catch (e) {
+      debugPrint("Error ----->> $e");
     }
   }
 }
+// else if (e.code == 'wrong-password') {
+// debugPrint('Wrong password provided for that user.');

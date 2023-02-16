@@ -82,11 +82,15 @@ class _EmailPasswordSignInScreenState extends State<EmailPasswordSignInScreen> {
 
   userSignIn() async {
     try {
-      final credential = await auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-      debugPrint('------------------>$credential');
+      debugPrint("currentUser --------- ${auth.currentUser}");
+      if (!auth.currentUser!.emailVerified) {
+        debugPrint("Send Email ---- ");
+        await auth.currentUser!.sendEmailVerification();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         debugPrint('The password provided is too weak.');
