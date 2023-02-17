@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_google/auth_screens/email_password_sign_in_screen.dart';
+import 'package:firebase_google/screen_flow/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class EmailPasswordLoginScreen extends StatefulWidget {
@@ -17,7 +18,9 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Email password login scren'),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -99,6 +102,9 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
       );
       if (auth.currentUser!.emailVerified) {
         debugPrint("currentUser ----------------> ${auth.currentUser}");
+        navigator();
+      } else {
+        debugPrint('verify your email');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -112,6 +118,13 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
       debugPrint("Error ----->> $e");
     }
   }
+
+  navigator() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+        (route) => false);
+  }
 }
-// else if (e.code == 'wrong-password') {
-// debugPrint('Wrong password provided for that user.');
