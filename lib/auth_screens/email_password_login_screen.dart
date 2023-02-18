@@ -19,7 +19,7 @@ class _EmailPasswordLoginScreenState extends State<EmailPasswordLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Email password login scren'),
+        title: const Text('Email password login screen'),
       ),
       body: Center(
         child: Padding(

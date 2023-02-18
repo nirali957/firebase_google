@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_google/screen_flow/home_screen.dart';
+import 'package:firebase_google/screen_flow/fire_store_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'auth_screens/email_password_login_screen.dart';
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
+              builder: (context) => const FireStoreScreen(),
             ),
             (route) => false,
           );
@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: const [
             FlutterLogo(
               size: 100,
-              // style: FlutterLogoStyle.markOnly,
+              style: FlutterLogoStyle.markOnly,
             ),
             SizedBox(
               height: 15,
